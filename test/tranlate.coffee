@@ -111,6 +111,41 @@ describe 'translate section', ()->
   #     } with (contractStorage);
   #   """#"
   #   make_test text_i, text_o
+  it 'bool ops', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+  
+    contract Forer {
+      uint public value;
+      
+      function forer() public returns (bool yourMom) {
+        bool a;
+        bool b;
+        bool c;
+        c = !c;
+        c = a && b;
+        c = a || b;
+        return c;
+      }
+    }
+    """#"
+    text_o = """
+    import { storage, logging } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let value:u32;
+    export function Forer__forer():boolean {
+      let a:boolean;
+      let b:boolean;
+      let c:boolean;
+      c = !(c);
+      c = (a and b);
+      c = (a or b);
+      return c;
+    };
+    // Smart Contract Forer END
+    ;
+    """#"
+    make_test text_i, text_o
   
   it 'uint ops', ()->
     text_i = """
