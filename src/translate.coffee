@@ -201,13 +201,19 @@ class @Gen_context
         jl.push "#{k} : #{translate_type v.type}"
       for k,v of ctx.fn_hash
         jl.push "#{k} : #{translate_type v.type}"
-      
-      """
-      // Smart Contract #{ast.name} START
-      #{body}
-      // Smart Contract #{ast.name} END
-      
-      """
+      if ast.is_struct
+        """
+        class #{ast.name} {
+          #{make_tab body, "  "}
+        }
+        """
+      else
+        """
+        // Smart Contract #{ast.name} START
+        #{body}
+        // Smart Contract #{ast.name} END
+
+        """
     
     
     

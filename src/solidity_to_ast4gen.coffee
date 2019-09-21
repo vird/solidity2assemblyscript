@@ -265,10 +265,21 @@ module.exports = (root)->
         for node in ast_tree.nodes
           ctx.current_contract.scope.list.push walk node, ctx
         ctx.current_contract
+      
+      when "StructDefinition"
+        ret = new ast.Class_decl
+        ret.name = ast_tree.name
+        ret.is_struct = true
+        for member in ast_tree.members
+          ret.scope.list.push walk member, ctx
+        ret
+
       else
         p ast_tree
         throw new Error("walk unknown nodeType '#{ast_tree.nodeType}'")
-    
+
+
+
   
   # first pass
   ret = new ast.Scope
