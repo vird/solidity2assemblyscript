@@ -74,6 +74,12 @@ translate_type = (type)->
   BOOL_NOT: (a)->"!(#{a})"
   BIT_NOT : (a)->"~(#{a})"
   BRACKET : (a)->"(#{a})"
+  # risk no bracket
+  PRE_INCR: (a)->"++#{a}"
+  POST_INCR: (a)->"#{a}++"
+  PRE_DECR: (a)->"--#{a}"
+  POST_DECR: (a)->"#{a}--"
+  
   # NOT VFERIFIED
   PLUS    : (a)->"+(#{a})"
 
@@ -203,7 +209,7 @@ class @Gen_context
         #{make_tab f, '  '}
       }
       """
-
+    
     when "While"
       cond = gen ast.cond, opt, ctx
       scope  = gen ast.scope, opt, ctx
@@ -211,6 +217,17 @@ class @Gen_context
       while (#{cond}) {
         #{make_tab scope, '  '}
       } 
+      """
+    
+    when "For_3pos"
+      init  = if ast.init then gen ast.init, opt, ctx else ""
+      cond  = gen ast.cond, opt, ctx
+      incr  = if ast.incr then gen ast.incr, opt, ctx else ""
+      scope = gen ast.scope, opt, ctx
+      """
+      for(#{init};#{cond};#{incr}) {
+        #{make_tab scope, '  '}
+      }
       """
     
     when "Class_decl"

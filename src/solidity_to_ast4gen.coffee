@@ -34,11 +34,17 @@ is_complex_assign_op =
   'ASS_MUL' : true
   'ASS_DIV' : true
 
-un_op_map =
+pre_un_op_map =
   '-' : 'MINUS'
   '+' : 'PLUS'
   '~' : 'BIT_NOT'
   '!' : 'BOOL_NOT'
+  '++': 'PRE_INCR'
+  '--': 'PRE_DECR'
+
+post_un_op_map =
+  '++': 'POST_INCR'
+  '--': 'POST_DECR'
 
 class Context
   current_contract  : null
@@ -143,9 +149,12 @@ module.exports = (root)->
       
       when 'UnaryOperation'
         ret = new ast.Un_op
-        ret.op = un_op_map[ast_tree.operator]
-        if !ret.op
-          throw new Error("unknown un_op #{ast_tree.operator}")
+        if ast_tree.prefix and op = pre_un_op_map[ast_tree.operator]
+          ret.op = op
+        else if !ast_tree.prefix and op = post_un_op_map[ast_tree.operator]
+          ret.op = op
+        else
+          throw new Error("unknown un_op #{ast_tree.operator} prefix=#{ast_tree.prefix}")
         ret.a = walk_exec ast_tree.subExpression, ctx
         ret
       
@@ -204,21 +213,14 @@ module.exports = (root)->
         ret
       
       when 'ForStatement'
-        ret = new ast.Scope
-        ret._phantom = true # HACK
+        ret = new ast.For_3pos
         if ast_tree.initializationExpression
-          ret.list.push walk_exec ast_tree.initializationExpression, ctx
-        ret.list.push inner = new ast.While
-        inner.cond = walk_exec ast_tree.condition, ctx
+          ret.init = walk_exec ast_tree.initializationExpression, ctx
         
-        loc = walk_exec ast_tree.body, ctx
-        if loc.constructor.name == 'Scope'
-          inner.scope = loc
-        else
-          inner.scope.list.push loc
-        
-        # т.к. у нас нет continue, то можно
-        inner.scope.list.push walk_exec ast_tree.loopExpression, ctx
+        ret.cond = walk_exec ast_tree.condition, ctx
+        if ast_tree.loopExpression?
+          ret.incr = walk_exec ast_tree.loopExpression, ctx
+        ret.scope = walk_exec ast_tree.body, ctx
         ret
       
       # ###################################################################################################

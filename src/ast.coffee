@@ -20,3 +20,12 @@ class @Ret_multi
   constructor:()->
     @t_list = []
 
+class @For_3pos
+  init  : null
+  cond  : null
+  incr  : null
+  scope : null
+  
+  constructor:()->
+    @scope = new ast.Scope
+

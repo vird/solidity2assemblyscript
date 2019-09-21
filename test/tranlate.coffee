@@ -189,7 +189,12 @@ describe 'translate section', ()->
         c = a & b;
         c = a | b;
         c = a ^ b;
+        c++;
+        ++c;
+        c--;
+        --c;
         c = a;
+        c = ~a;
         c += a;
         c -= a;
         c *= a;
@@ -214,7 +219,12 @@ describe 'translate section', ()->
         c = (a & b);
         c = (a | b);
         c = (a ^ b);
+        c++;
+        ++c;
+        c--;
+        --c;
         c = a;
+        c = ~(a);
         c += a;
         c -= a;
         c *= a;
@@ -248,6 +258,10 @@ describe 'translate section', ()->
         c = a & b;
         c = a | b;
         c = a ^ b;
+        c++;
+        ++c;
+        c--;
+        --c;
         bb = a == b;
         bb = a != b;
         bb = a <  b;
@@ -277,6 +291,10 @@ describe 'translate section', ()->
         c = (a & b);
         c = (a | b);
         c = (a ^ b);
+        c++;
+        ++c;
+        c--;
+        --c;
         bb = (a == b);
         bb = (a != b);
         bb = (a < b);
@@ -371,45 +389,39 @@ describe 'translate section', ()->
     ;
     """#"
     make_test text_i, text_o
-  # 
-  # it 'for', ()->
-  #   text_i = """
-  #   pragma solidity ^0.5.11;
-  # 
-  #   contract Forer {
-  #     mapping (address => int) balances;
-  #     
-  #     function forer(address owner) public returns (int yourMom) {
-  #       int i = 0;
-  #       for(i=2;i < 5;i+=10) {
-  #         i += 1;
-  #       }
-  #       return i;
-  #     }
-  #   }
-  #   """#"
-  #   text_o = """
-  #   type state is record
-  #     balances: map(address, int);
-  #   end;
-  #   
-  #   function forer (const owner : address; const contractStorage : state) : (int * state) is
-  #     block {
-  #       const i : int = 0;
-  #       i := 2;
-  #       while (i < 5) block {
-  #         i := (i + 1);
-  #         i := (i + 10);
-  #       };
-  #     } with (i, contractStorage);
-  #   
-  #   function main (const dummy_int : int; const contractStorage : state) : (state) is
-  #     block {
-  #       skip
-  #     } with (contractStorage);
-  #   """
-  #   make_test text_i, text_o
-  # 
+  
+  it 'for', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+  
+    contract Forer {
+      mapping (address => int) balances;
+      
+      function forer(address owner) public returns (int yourMom) {
+        int i = 0;
+        for(i=2;i < 5;i++) {
+          i += 1;
+        }
+        return i;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let balances:PersistentMap<string,i32>;
+    export function Forer__forer(owner:string):i32 {
+      let i:i32 = 0;
+      for(i = 2;(i < 5);i++) {
+        i += 1;
+      };
+      return i;
+    };
+    // Smart Contract Forer END
+    ;
+    """
+    make_test text_i, text_o
+  
   it 'fn call', ()->
     text_i = """
     pragma solidity ^0.5.11;
@@ -452,6 +464,7 @@ describe 'translate section', ()->
       
       function ifer() public {
         User memory u = User(1, 2, 3);
+        u.level = 20;
       }
     }
     """#"
@@ -467,6 +480,7 @@ describe 'translate section', ()->
     ;
     export function Struct__ifer():void {
       let u:User = User(1, 2, 3);
+      u.level = 20;
     };
     // Smart Contract Struct END
     ;
