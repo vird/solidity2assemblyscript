@@ -29,6 +29,20 @@ describe 'ast_gen section', ()->
     }
     """, silent:true
   
+  it 'test non silent', ()->
+    ast_gen """
+    pragma solidity ^0.5.11;
+    
+    contract Summator {
+      uint public value;
+      
+      function sum(uint unused) public returns (uint yourMom) {
+        uint x = 5;
+        return value + x;
+      }
+    }
+    """, silent:false
+  
   it 'test bad contract', ()->
     assert.throws ()->
       ast_gen """

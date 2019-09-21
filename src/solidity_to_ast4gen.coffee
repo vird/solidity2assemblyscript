@@ -75,6 +75,7 @@ module.exports = (root)->
         ret
       
       else
+        ### !pragma coverage-skip-block ###
         p ast_tree
         throw new Error("walk_type unknown nodeType '#{ast_tree.nodeType}'")
   
@@ -95,6 +96,7 @@ module.exports = (root)->
         ret.push t
         ret
       else
+        ### !pragma coverage-skip-block ###
         p ast_tree
         throw new Error("walk_param unknown nodeType '#{ast_tree.nodeType}'")
     
@@ -120,6 +122,7 @@ module.exports = (root)->
         ret = new ast.Bin_op
         ret.op = bin_op_map[ast_tree.operator]
         if !ret.op
+          ### !pragma coverage-skip-block ###
           throw new Error("unknown bin_op #{ast_tree.operator}")
         ret.a = walk_exec ast_tree.leftHandSide, ctx
         ret.b = walk_exec ast_tree.rightHandSide, ctx
@@ -129,6 +132,7 @@ module.exports = (root)->
         ret = new ast.Bin_op
         ret.op = bin_op_map[ast_tree.operator]
         if !ret.op
+          ### !pragma coverage-skip-block ###
           throw new Error("unknown bin_op #{ast_tree.operator}")
         ret.a = walk_exec ast_tree.leftExpression, ctx
         ret.b = walk_exec ast_tree.rightExpression, ctx
@@ -154,6 +158,7 @@ module.exports = (root)->
         else if !ast_tree.prefix and op = post_un_op_map[ast_tree.operator]
           ret.op = op
         else
+          ### !pragma coverage-skip-block ###
           throw new Error("unknown un_op #{ast_tree.operator} prefix=#{ast_tree.prefix}")
         ret.a = walk_exec ast_tree.subExpression, ctx
         ret
@@ -248,6 +253,7 @@ module.exports = (root)->
         ret
       
       else
+        ### !pragma coverage-skip-block ###
         p ast_tree
         throw new Error("walk_exec unknown nodeType '#{ast_tree.nodeType}'")
     
@@ -258,6 +264,7 @@ module.exports = (root)->
         name = ast_tree.literals[0]
         return if name == 'solidity'
         return if name == 'experimental'
+        ### !pragma coverage-skip-block ###
         throw new Error("unknown pragma '#{name}'")
       
       when "VariableDeclaration"
@@ -313,6 +320,7 @@ module.exports = (root)->
         ret
 
       else
+        ### !pragma coverage-skip-block ###
         p ast_tree
         throw new Error("walk unknown nodeType '#{ast_tree.nodeType}'")
 

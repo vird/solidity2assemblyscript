@@ -80,8 +80,8 @@ translate_type = (type)->
   PRE_DECR: (a)->"--#{a}"
   POST_DECR: (a)->"#{a}--"
   
-  # NOT VFERIFIED
-  PLUS    : (a)->"+(#{a})"
+  # NOTE unary plus is now disallowed
+  # PLUS    : (a)->"+(#{a})"
 
 class @Gen_context
   class_name: null
