@@ -33,6 +33,7 @@ translate_type = (type)->
     when 'bytes'
       'Uint8Array'
     else
+      ### !pragma coverage-skip-block ###
       pp type
       throw new Error("unknown solidity type '#{type}'")
     
@@ -85,11 +86,6 @@ translate_type = (type)->
 
 class @Gen_context
   class_name: null
-  var_hash : {}
-  fn_hash  : {}
-  constructor : ()->
-    @var_hash = {}
-  
   mk_nest : ()->
     t = new module.Gen_context
     t
@@ -128,6 +124,7 @@ class @Gen_context
       else if cb = module.bin_op_name_cb_map[ast.op]
         cb(_a, _b, ctx, ast)
       else
+        ### !pragma coverage-skip-block ###
         throw new Error "Unknown/unimplemented bin_op #{ast.op}"
     
     when "Un_op"
@@ -136,6 +133,7 @@ class @Gen_context
       else if cb = module.un_op_name_cb_map[ast.op]
         cb gen(ast.a, opt, ctx), ctx
       else
+        ### !pragma coverage-skip-block ###
         throw new Error "Unknown/unimplemented un_op #{ast.op}"
     
     when "Field_access"
@@ -239,14 +237,7 @@ class @Gen_context
     when "Class_decl"
       ctx = ctx.mk_nest()
       ctx.class_name = ast.name
-      
       body = gen ast.scope, opt, ctx
-      jl = []
-      for k,v of ctx.var_hash
-        jl.push "#{k} : #{translate_type v.type}"
-      for k,v of ctx.fn_hash
-        jl.push "#{k} : #{translate_type v.type}"
-
       if ast.is_struct
         """
         export class #{ast.name} {
@@ -267,11 +258,7 @@ class @Gen_context
       ctx = ctx.mk_nest()
       arg_jl = []
       for v,idx in ast.arg_name_list
-        ctx.var_hash[v] = {
-          _is_arg : true
-          type : type = ast.type_i.nest_list[idx]
-        }
-        arg_jl.push "#{v}:#{translate_type type}"
+        arg_jl.push "#{v}:#{translate_type ast.type_i.nest_list[idx]}"
       body = gen ast.scope, opt, ctx
       prefix = ""
       prefix = "#{ctx_orig.class_name}__" if ctx_orig.class_name?
