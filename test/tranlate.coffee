@@ -294,37 +294,31 @@ describe 'translate section', ()->
   #   """
   #   make_test text_i, text_o
   # 
-  # it 'maps', ()->
-  #   text_i = """
-  #   pragma solidity ^0.5.11;
-  # 
-  #   contract Forer {
-  #     mapping (address => int) balances;
-  #     
-  #     function forer(address owner) public returns (int yourMom) {
-  #       balances[owner] += 1;
-  #       return balances[owner];
-  #     }
-  #   }
-  #   """#"
-  #   text_o = """
-  #     type state is record
-  #       balances: map(address, int);
-  #     end;
-  #     
-  #     function forer (const owner : address; const contractStorage : state) : (int * state) is
-  #       block {
-  #         const tmp_0 : map(address, int) = contractStorage.balances;
-  #         tmp_0[owner] := ((case contractStorage.balances[owner] of | None -> 0 | Some(x) -> x end) + 1);
-  #         contractStorage.balances := tmp_0;
-  #       } with ((case contractStorage.balances[owner] of | None -> 0 | Some(x) -> x end), contractStorage);
-  #     
-  #     function main (const dummy_int : int; const contractStorage : state) : (state) is
-  #       block {
-  #         skip
-  #       } with (contractStorage);
-  #   """
-  #   make_test text_i, text_o
+  it 'maps', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+  
+    contract Forer {
+      mapping (address => int) balances;
+      
+      function forer(address owner) public returns (int yourMom) {
+        balances[owner] += 1;
+        return balances[owner];
+      }
+    }
+    """#"
+    text_o = """
+      import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+      // Smart Contract Forer START
+      let balances:new PersistentMap<address,i32>;
+      export function Forer__forer(owner:address):i32 {
+        balances[owner] += 1;
+        return balances[owner];
+      };
+      // Smart Contract Forer END
+      ;
+    """#"
+    make_test text_i, text_o
   # 
   # it 'while', ()->
   #   text_i = """
