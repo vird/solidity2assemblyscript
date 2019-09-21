@@ -473,6 +473,44 @@ describe 'translate section', ()->
     """#"
     make_test text_i, text_o
   
+  it 'struct in struct', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Struct {
+      uint public value;
+      
+        struct Sub {
+            uint experience;
+        }
+        struct User {
+            Sub experience;
+        }
+      
+      function ifer() public {
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Struct START
+    let value:u32;
+    export class Sub {
+      let experience:u32;
+    }
+    ;
+    export class User {
+      let experience:Sub;
+    }
+    ;
+    export function Struct__ifer():void {
+      
+    };
+    // Smart Contract Struct END
+    ;
+    """#"
+    make_test text_i, text_o
+  
   it 'bracket tuple', ()->
     text_i = """
     pragma solidity ^0.5.11;
