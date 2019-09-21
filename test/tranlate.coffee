@@ -597,6 +597,8 @@ describe 'translate section', ()->
             bytes memory c = new bytes(len);
             bool[] memory d = new bool[](len);
             address[] memory e = new address[](len);
+            address[10] memory f;
+            // address[10] memory g = new address[10];
             a[6] = 8;
         }
     }
@@ -611,6 +613,7 @@ describe 'translate section', ()->
       let c:Uint8Array = new Uint8Array(len);
       let d:bool[] = new bool[](len);
       let e:address[] = new address[](len);
+      let f:address[];
       a[6] = 8;
     };
     // Smart Contract Array END
