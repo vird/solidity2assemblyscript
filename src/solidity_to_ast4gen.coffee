@@ -48,17 +48,25 @@ module.exports = (root)->
   walk_type = (ast_tree, ctx)->
     switch ast_tree.nodeType
       when 'ElementaryTypeName'
-        new Type ast_tree.typeDescriptions.typeIdentifier
+        new Type ast_tree.name
+      
       when 'Mapping'
         ret = new Type "map"
         ret.nest_list.push walk_type ast_tree.keyType, ctx
         ret.nest_list.push walk_type ast_tree.valueType, ctx
         ret
+      
       when 'ArrayTypeName'
         ret = new Type "array"
         ret.nest_list.push walk_type ast_tree.baseType, ctx
         ret.nest_list.push ast_tree.length.value
         ret
+      
+      when 'UserDefinedTypeName'
+        ret = new Type ast_tree.name
+        ret.is_user_defined = true
+        ret
+      
       else
         p ast_tree
         throw new Error("walk_type unknown nodeType '#{ast_tree.nodeType}'")
@@ -74,7 +82,7 @@ module.exports = (root)->
         if ast_tree.value
           throw new Error("ast_tree.value not implemented")
         ret = []
-        t = new Type ast_tree.typeDescriptions.typeIdentifier
+        t = walk_type ast_tree.typeName, ctx
         # HACK INJECT
         t._name = ast_tree.name
         ret.push t
@@ -164,7 +172,7 @@ module.exports = (root)->
         
         ret = new ast.Var_decl
         ret.name = decl.name
-        ret.type = new Type decl.typeDescriptions.typeIdentifier
+        ret.type = walk_type decl.typeName, ctx
         if ast_tree.initialValue
           ret.assign_value = walk_exec ast_tree.initialValue, ctx
         ret
@@ -227,6 +235,7 @@ module.exports = (root)->
         return if name == 'solidity'
         return if name == 'experimental'
         throw new Error("unknown pragma '#{name}'")
+      
       when "VariableDeclaration"
         ret = new ast.Var_decl
         ret._const = ast_tree.constant

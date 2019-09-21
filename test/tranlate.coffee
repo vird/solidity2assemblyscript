@@ -305,8 +305,8 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let balances:PersistentMap<address,u32>;
-    export function Forer__forer(owner:address):u32 {
+    let balances:PersistentMap<string,u32>;
+    export function Forer__forer(owner:string):u32 {
       return balances[owner];
     };
     // Smart Contract Forer END
@@ -330,8 +330,8 @@ describe 'translate section', ()->
     text_o = """
       import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
       // Smart Contract Forer START
-      let balances:PersistentMap<address,i32>;
-      export function Forer__forer(owner:address):i32 {
+      let balances:PersistentMap<string,i32>;
+      export function Forer__forer(owner:string):i32 {
         balances[owner] += 1;
         return balances[owner];
       };
@@ -359,8 +359,8 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let balances:PersistentMap<address,i32>;
-    export function Forer__forer(owner:address):i32 {
+    let balances:PersistentMap<string,i32>;
+    export function Forer__forer(owner:string):i32 {
       let i:i32 = 0;
       while ((i < 5)) {
         i += 1;
@@ -434,6 +434,42 @@ describe 'translate section', ()->
     };
     // Smart Contract Forer END
     ;
-    """
+    """#"
+    make_test text_i, text_o
+  
+  it 'struct', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Struct {
+      uint public value;
+      
+        struct User {
+            uint experience;
+            uint level;
+            uint dividends;
+        }
+      
+      function ifer() public {
+        User memory u = User(1, 2, 3);
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Struct START
+    let value:u32;
+    export class User {
+      let experience:u32;
+      let level:u32;
+      let dividends:u32;
+    }
+    ;
+    export function Struct__ifer():void {
+      let u:User = User(1, 2, 3);
+    };
+    // Smart Contract Struct END
+    ;
+    """#"
     make_test text_i, text_o
   

@@ -2,20 +2,23 @@ require 'fy/codegen'
 module = @
 
 translate_type = (type)->
+  if type.is_user_defined
+    return type.main
   switch type.main
-    when 't_bool'
+    when 'bool'
       'boolean'
-    when 't_uint256'
+    when 'uint'
       'u32'
-    when 't_int256'
+    when 'int'
       'i32'
-    when 't_address'
+    when 'address'
       'string'
     when 'map'
       "PersistentMap<#{translate_type type.nest_list[0]},#{translate_type type.nest_list[1]}>"
     when 'array'
       "#{translate_type type.nest_list[0]}[]"
     else
+      pp type
       throw new Error("unknown solidity type '#{type}'")
     
     
