@@ -10,7 +10,7 @@ translate_type = (type)->
     when 't_int256'
       'i32'
     when 't_address'
-      'address'
+      'string'
     when 'map'
       "new PersistentMap<#{translate_type type.nest_list[0]},#{translate_type type.nest_list[1]}>" 
     else
