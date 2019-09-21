@@ -202,9 +202,10 @@ class @Gen_context
         jl.push "#{k} : #{translate_type v.type}"
       for k,v of ctx.fn_hash
         jl.push "#{k} : #{translate_type v.type}"
+
       if ast.is_struct
         """
-        class #{ast.name} {
+        export class #{ast.name} {
           #{make_tab body, "  "}
         }
         """
