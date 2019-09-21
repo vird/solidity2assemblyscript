@@ -28,7 +28,7 @@ describe 'translate section', ()->
     }
     """
     text_o = """
-    import { storage, logging } from "near-runtime-ts";
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Summator START
     let value:u32;
     export function Summator__test():void {
@@ -60,7 +60,7 @@ describe 'translate section', ()->
     }
     """
     text_o = """
-    import { storage, logging } from "near-runtime-ts";
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Ifer START
     let value:u32;
     export function Ifer__ifer():u32 {
@@ -130,7 +130,7 @@ describe 'translate section', ()->
     }
     """#"
     text_o = """
-    import { storage, logging } from "near-runtime-ts";
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
     let value:u32;
     export function Forer__forer():boolean {
@@ -166,12 +166,17 @@ describe 'translate section', ()->
         c = a & b;
         c = a | b;
         c = a ^ b;
+        c = a;
+        c += a;
+        c -= a;
+        c *= a;
+        c /= a;
         return c;
       }
     }
     """#"
     text_o = """
-      import { storage, logging } from "near-runtime-ts";
+      import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
       // Smart Contract Forer START
       let value:u32;
       export function Forer__forer():u32 {
@@ -186,6 +191,11 @@ describe 'translate section', ()->
         c = (a & b);
         c = (a | b);
         c = (a ^ b);
+        c = a;
+        c += a;
+        c -= a;
+        c *= a;
+        c /= a;
         return c;
       };
       // Smart Contract Forer END
@@ -225,7 +235,7 @@ describe 'translate section', ()->
     }
     """#"
     text_o = """
-      import { storage, logging } from "near-runtime-ts";
+      import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
       // Smart Contract Forer START
       let value:i32;
       export function Forer__forer():i32 {

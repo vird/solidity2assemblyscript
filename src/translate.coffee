@@ -41,7 +41,6 @@ translate_type = (type)->
   BOOL_OR : 'or'
 
 @bin_op_name_cb_map =
-  # NOT VFERIFIED
   ASSIGN  : (a, b)-> "#{a} = #{b}"
   ASS_ADD : (a, b)-> "#{a} += #{b}"
   ASS_SUB : (a, b)-> "#{a} -= #{b}"
