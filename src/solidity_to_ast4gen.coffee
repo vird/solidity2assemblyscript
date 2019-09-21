@@ -54,6 +54,11 @@ module.exports = (root)->
         ret.nest_list.push walk_type ast_tree.keyType, ctx
         ret.nest_list.push walk_type ast_tree.valueType, ctx
         ret
+      when 'ArrayTypeName'
+        ret = new Type "array"
+        ret.nest_list.push walk_type ast_tree.baseType, ctx
+        ret.nest_list.push ast_tree.length.value
+        ret
       else
         p ast_tree
         throw new Error("walk_type unknown nodeType '#{ast_tree.nodeType}'")

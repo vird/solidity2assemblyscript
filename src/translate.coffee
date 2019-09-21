@@ -12,7 +12,9 @@ translate_type = (type)->
     when 't_address'
       'string'
     when 'map'
-      "new PersistentMap<#{translate_type type.nest_list[0]},#{translate_type type.nest_list[1]}>" 
+      "PersistentMap<#{translate_type type.nest_list[0]},#{translate_type type.nest_list[1]}>"
+    when 'array'
+      "#{translate_type type.nest_list[0]}[]"
     else
       throw new Error("unknown solidity type '#{type}'")
     
@@ -73,8 +75,6 @@ class @Gen_context
   
   """
   import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
-  import { context, storage, near, collections } from "./near";
-
   #{ret}
   """#"
 
@@ -208,13 +208,14 @@ class @Gen_context
         export class #{ast.name} {
           #{make_tab body, "  "}
         }
+        
         """
       else
         """
         // Smart Contract #{ast.name} START
         #{body}
         // Smart Contract #{ast.name} END
-
+        
         """
     
     when "Fn_decl_multiret"

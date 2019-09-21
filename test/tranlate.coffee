@@ -81,7 +81,7 @@ describe 'translate section', ()->
   it 'require', ()->
     text_i = """
     pragma solidity ^0.5.11;
-  
+    
     contract Forer {
       uint public value;
       
@@ -290,35 +290,30 @@ describe 'translate section', ()->
     """#"
     make_test text_i, text_o
   
-  # it 'a[b]', ()->
-  #   text_i = """
-  #   pragma solidity ^0.5.11;
-  # 
-  #   contract Forer {
-  #     mapping (address => uint) balances;
-  #     
-  #     function forer(address owner) public returns (uint yourMom) {
-  #       return balances[owner];
-  #     }
-  #   }
-  #   """#"
-  #   text_o = """
-  #   type state is record
-  #     balances: map(address, nat);
-  #   end;
-  #   
-  #   function forer (const owner : address; const contractStorage : state) : (nat * state) is
-  #     block {
-  #       skip
-  #     } with ((case contractStorage.balances[owner] of | None -> 0n | Some(x) -> x end), contractStorage);
-  #   
-  #   function main (const dummy_int : int; const contractStorage : state) : (state) is
-  #     block {
-  #       skip
-  #     } with (contractStorage);
-  #   """
-  #   make_test text_i, text_o
-  # 
+  it 'a[b]', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Forer {
+      mapping (address => uint) balances;
+      
+      function forer(address owner) public returns (uint yourMom) {
+        return balances[owner];
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let balances:PersistentMap<address,u32>;
+    export function Forer__forer(owner:address):u32 {
+      return balances[owner];
+    };
+    // Smart Contract Forer END
+    ;
+    """#"
+    make_test text_i, text_o
+  
   it 'maps', ()->
     text_i = """
     pragma solidity ^0.5.11;
@@ -335,7 +330,7 @@ describe 'translate section', ()->
     text_o = """
       import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
       // Smart Contract Forer START
-      let balances:new PersistentMap<address,i32>;
+      let balances:PersistentMap<address,i32>;
       export function Forer__forer(owner:address):i32 {
         balances[owner] += 1;
         return balances[owner];
@@ -344,42 +339,38 @@ describe 'translate section', ()->
       ;
     """#"
     make_test text_i, text_o
-  # 
-  # it 'while', ()->
-  #   text_i = """
-  #   pragma solidity ^0.5.11;
-  # 
-  #   contract Forer {
-  #     mapping (address => int) balances;
-  #     
-  #     function forer(address owner) public returns (int yourMom) {
-  #       int i = 0;
-  #       while(i < 5) {
-  #         i += 1;
-  #       }
-  #       return i;
-  #     }
-  #   }
-  #   """#"
-  #   text_o = """
-  #   type state is record
-  #     balances: map(address, int);
-  #   end;
-  #   
-  #   function forer (const owner : address; const contractStorage : state) : (int * state) is
-  #     block {
-  #       const i : int = 0;
-  #       while (i < 5) block {
-  #         i := (i + 1);
-  #       };
-  #     } with (i, contractStorage);
-  #   
-  #   function main (const dummy_int : int; const contractStorage : state) : (state) is
-  #     block {
-  #       skip
-  #     } with (contractStorage);
-  #   """
-  #   make_test text_i, text_o
+  
+  it 'while', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Forer {
+      mapping (address => int) balances;
+      
+      function forer(address owner) public returns (int yourMom) {
+        int i = 0;
+        while(i < 5) {
+          i += 1;
+        }
+        return i;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let balances:PersistentMap<address,i32>;
+    export function Forer__forer(owner:address):i32 {
+      let i:i32 = 0;
+      while ((i < 5)) {
+        i += 1;
+      } ;
+      return i;
+    };
+    // Smart Contract Forer END
+    ;
+    """#"
+    make_test text_i, text_o
   # 
   # it 'for', ()->
   #   text_i = """
@@ -419,38 +410,30 @@ describe 'translate section', ()->
   #   """
   #   make_test text_i, text_o
   # 
-  # it 'fn call', ()->
-  #   text_i = """
-  #   pragma solidity ^0.5.11;
-  # 
-  #   contract Forer {
-  #     function call_me(int a) public returns (int yourMom) {
-  #       return a;
-  #     }
-  #     function forer(int a) public returns (int yourMom) {
-  #       return call_me(a);
-  #     }
-  #   }
-  #   """#"
-  #   text_o = """
-  #   type state is record
-  #     
-  #   end;
-  #   
-  #   function call_me (const a : int; const contractStorage : state) : (int * state) is
-  #     block {
-  #       skip
-  #     } with (a, contractStorage);
-  #   
-  #   function forer (const a : int; const contractStorage : state) : (int * state) is
-  #     block {
-  #       const tmp_0 : (int * state) = call_me(a, contractStorage);
-  #     } with (tmp_0, contractStorage);
-  #   
-  #   function main (const dummy_int : int; const contractStorage : state) : (state) is
-  #     block {
-  #       skip
-  #     } with (contractStorage);
-  #   """
-  #   make_test text_i, text_o
+  it 'fn call', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Forer {
+      function call_me(int a) public returns (int yourMom) {
+        return a;
+      }
+      function forer(int a) public returns (int yourMom) {
+        return call_me(a);
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    export function Forer__call_me(a:i32):i32 {
+      return a;
+    };
+    export function Forer__forer(a:i32):i32 {
+      return call_me(a);
+    };
+    // Smart Contract Forer END
+    ;
+    """
+    make_test text_i, text_o
   
