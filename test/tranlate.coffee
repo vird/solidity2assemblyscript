@@ -126,7 +126,7 @@ describe 'translate section', ()->
     let value:u32;
     export function Forer__forer():u32 {
       let y:u32 = 0;
-      assert(!(y == 0)));
+      assert((y == 0)));
       return y;
     };
     // Smart Contract Forer END
@@ -636,6 +636,8 @@ describe 'translate section', ()->
 
     """#"
     text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Array START
     export class User {
       let experience:u32;
       let level:u32;
