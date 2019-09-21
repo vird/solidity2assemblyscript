@@ -1,6 +1,19 @@
 require 'fy/codegen'
 module = @
 
+translate_type_array = (type)->
+  nest = type.nest_list[0]
+  switch nest.main
+    when 'bool', 'address'
+      p "WARNING #{nest.main}[] is probably not existing type in assemblyScript"
+      "#{nest.main}[]"
+    when 'int'
+      'Int32Array'
+    when 'uint'
+      'UInt32Array'
+    else
+      "#{translate_type nest}[]"
+
 translate_type = (type)->
   if type.is_user_defined
     return type.main
@@ -16,7 +29,9 @@ translate_type = (type)->
     when 'map'
       "PersistentMap<#{translate_type type.nest_list[0]},#{translate_type type.nest_list[1]}>"
     when 'array'
-      "#{translate_type type.nest_list[0]}[]"
+      translate_type_array type
+    when 'bytes'
+      'Uint8Array'
     else
       pp type
       throw new Error("unknown solidity type '#{type}'")
@@ -110,7 +125,9 @@ class @Gen_context
         throw new Error "Unknown/unimplemented bin_op #{ast.op}"
     
     when "Un_op"
-      if cb = module.un_op_name_cb_map[ast.op]
+      if ast.op == 'NEW'
+        "new #{translate_type ast.a_type}"
+      else if cb = module.un_op_name_cb_map[ast.op]
         cb gen(ast.a, opt, ctx), ctx
       else
         throw new Error "Unknown/unimplemented un_op #{ast.op}"

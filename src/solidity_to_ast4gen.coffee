@@ -59,7 +59,8 @@ module.exports = (root)->
       when 'ArrayTypeName'
         ret = new Type "array"
         ret.nest_list.push walk_type ast_tree.baseType, ctx
-        ret.nest_list.push ast_tree.length.value
+        if ast_tree.length?
+          ret.nest_list.push ast_tree.length.value
         ret
       
       when 'UserDefinedTypeName'
@@ -150,11 +151,16 @@ module.exports = (root)->
       
       when 'FunctionCall'
         ret = new ast.Fn_call
-        ret.fn = new ast.Var
-        ret.fn.name = ast_tree.expression.name
+        ret.fn = walk_exec ast_tree.expression, ctx
         
         for v in ast_tree.arguments
           ret.arg_list.push walk_exec v, ctx
+        ret
+      
+      when 'NewExpression'
+        ret = new ast.Un_op
+        ret.op = 'NEW'
+        ret.a_type = walk_type ast_tree.typeName, ctx
         ret
       
       # ###################################################################################################

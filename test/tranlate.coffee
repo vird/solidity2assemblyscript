@@ -498,3 +498,35 @@ describe 'translate section', ()->
     """#"
     make_test text_i, text_o
   
+  it 'typed arrays', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+
+    contract Array {
+        function f(uint len) public {
+            uint[] memory a = new uint[](7);
+            int[] memory b = new int[](1000);
+            bytes memory c = new bytes(len);
+            bool[] memory d = new bool[](len);
+            address[] memory e = new address[](len);
+            a[6] = 8;
+        }
+    }
+
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Array START
+    export function Array__f(len:u32):void {
+      let a:UInt32Array = new UInt32Array(7);
+      let b:Int32Array = new Int32Array(1000);
+      let c:Uint8Array = new Uint8Array(len);
+      let d:bool[] = new bool[](len);
+      let e:address[] = new address[](len);
+      a[6] = 8;
+    };
+    // Smart Contract Array END
+    ;
+    """#"
+    make_test text_i, text_o
+  
