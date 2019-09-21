@@ -98,7 +98,7 @@ describe 'translate section', ()->
     let value:u32;
     export function Forer__forer():u32 {
       let y:u32 = 0;
-      assert(!(y == 0)), "wtf");
+      assert((y == 0)), "wtf");
       return y;
     };
     // Smart Contract Forer END
