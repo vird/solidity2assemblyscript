@@ -128,9 +128,10 @@ class @Gen_context
       
       # HACK
       if fn == "require"
-        failtext = arg_list[1] or ""
+        aux_failtext = arg_list[1] or ""
+        aux_failtext = ", #{aux_failtext}" if aux_failtext
         return """
-          if (!#{arg_list[0]}) throw new Error(#{failtext})
+          assert(!#{arg_list[0]})#{aux_failtext})
           """
       
       "#{fn}(#{arg_list.join ', '})"
@@ -206,8 +207,6 @@ class @Gen_context
       // Smart Contract #{ast.name} END
       
       """
-    
-    
     
     when "Fn_decl_multiret"
       ctx_orig = ctx

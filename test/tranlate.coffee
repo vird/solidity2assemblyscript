@@ -78,39 +78,62 @@ describe 'translate section', ()->
     """
     make_test text_i, text_o
   
-  # it 'require', ()->
-  #   text_i = """
-  #   pragma solidity ^0.5.11;
-  # 
-  #   contract Forer {
-  #     uint public value;
-  #     
-  #     function forer() public returns (uint yourMom) {
-  #       uint y = 0;
-  #       require(y == 0, "wtf");
-  #       return y;
-  #     }
-  #   }
-  #   """#"
-  #   text_o = """
-  #   type state is record
-  #     value: nat;
-  #   end;
-  #   
-  #   function forer (const contractStorage : state) : (nat * state) is
-  #     block {
-  #       const y : nat = 0n;
-  #       if (not (y = 0n)) then begin
-  #         fail("wtf");
-  #       end;
-  #     } with (y, contractStorage);
-  #   
-  #   function main (const dummy_int : int; const contractStorage : state) : (state) is
-  #     block {
-  #       skip
-  #     } with (contractStorage);
-  #   """#"
-  #   make_test text_i, text_o
+  it 'require', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+  
+    contract Forer {
+      uint public value;
+      
+      function forer() public returns (uint yourMom) {
+        uint y = 0;
+        require(y == 0, "wtf");
+        return y;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let value:u32;
+    export function Forer__forer():u32 {
+      let y:u32 = 0;
+      assert(!(y == 0)), "wtf");
+      return y;
+    };
+    // Smart Contract Forer END
+    ;
+    """#"
+    make_test text_i, text_o
+  
+  it 'require no msg', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+  
+    contract Forer {
+      uint public value;
+      
+      function forer() public returns (uint yourMom) {
+        uint y = 0;
+        require(y == 0);
+        return y;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let value:u32;
+    export function Forer__forer():u32 {
+      let y:u32 = 0;
+      assert(!(y == 0)));
+      return y;
+    };
+    // Smart Contract Forer END
+    ;
+    """#"
+    make_test text_i, text_o
+  
   it 'bool ops', ()->
     text_i = """
     pragma solidity ^0.5.11;
