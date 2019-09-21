@@ -73,6 +73,8 @@ class @Gen_context
   
   """
   import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+  import { context, storage, near, collections } from "./near";
+
   #{ret}
   """#"
 
