@@ -652,3 +652,34 @@ describe 'translate section', ()->
     """#"
     make_test text_i, text_o
   
+  it 'globals', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Globals {
+      uint public value;
+      
+      function ifer() public payable returns (uint) {
+        uint x = block.number;
+        address y = msg.sender;
+        uint z = msg.value;
+
+        return x;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Globals START
+    let value:u32;
+    export function Globals__ifer():u32 {
+      let x:u32 = context.blockIndex();
+      let y:string = context.sender();
+      let z:u32 = context.attachedDeposit();
+      return x;
+    };
+    // Smart Contract Globals END
+    ;
+    """#"
+    make_test text_i, text_o
+  
