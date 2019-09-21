@@ -238,6 +238,7 @@ module.exports = (root)->
       when "FunctionDefinition"
         fn = ctx.current_function = new ast.Fn_decl_multiret
         fn.name = ast_tree.name or 'constructor'
+        fn.visibility = ast_tree.visibility
         
         fn.type_i =  new Type 'function'
         fn.type_o =  new Type 'function'
