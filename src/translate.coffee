@@ -52,9 +52,9 @@ translate_type = (type)->
 @un_op_name_cb_map =
   MINUS   : (a)->"-(#{a})"
   BOOL_NOT: (a)->"!(#{a})"
+  BIT_NOT : (a)->"~(#{a})"
   # NOT VFERIFIED
   PLUS    : (a)->"+(#{a})"
-  BIT_NOT : (a)->"~(#{a})"
 
 class @Gen_context
   class_name: null
