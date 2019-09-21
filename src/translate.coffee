@@ -13,6 +13,8 @@ translate_type = (type)->
       'address'
     when 'map'
       "new PersistentMap<#{translate_type type.nest_list[0]},#{translate_type type.nest_list[1]}>" 
+    when 'array'
+      "#{translate_type type.nest_list[0]}[]"
     else
       throw new Error("unknown solidity type '#{type}'")
     
