@@ -58,6 +58,7 @@ translate_type = (type)->
   MINUS   : (a)->"-(#{a})"
   BOOL_NOT: (a)->"!(#{a})"
   BIT_NOT : (a)->"~(#{a})"
+  BRACKET : (a)->"(#{a})"
   # NOT VFERIFIED
   PLUS    : (a)->"+(#{a})"
 

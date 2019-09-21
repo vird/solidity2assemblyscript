@@ -473,3 +473,28 @@ describe 'translate section', ()->
     """#"
     make_test text_i, text_o
   
+  it 'bracket tuple', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Mapper {
+      function ifer() public payable {
+        int a = 1;
+        int b = 1;
+        int c = (a+b)*b;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Mapper START
+    export function Mapper__ifer():void {
+      let a:i32 = 1;
+      let b:i32 = 1;
+      let c:i32 = (((a + b)) * b);
+    };
+    // Smart Contract Mapper END
+    ;
+    """#"
+    make_test text_i, text_o
+  

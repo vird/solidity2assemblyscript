@@ -223,6 +223,16 @@ module.exports = (root)->
         ret.t_list.push walk_exec ast_tree.expression, ctx
         ret
       
+      # Special case
+      when 'TupleExpression'
+        if ast_tree.components.length != 1
+          throw new Error("Tuples not supported ast_tree.components.length != 1 not supported")
+        ret = new ast.Un_op
+        ret.op = 'BRACKET'
+        ret.a = walk_exec ast_tree.components[0], ctx
+        ret.type = ret.a.type
+        ret
+      
       else
         p ast_tree
         throw new Error("walk_exec unknown nodeType '#{ast_tree.nodeType}'")
