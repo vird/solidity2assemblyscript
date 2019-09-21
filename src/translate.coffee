@@ -112,8 +112,12 @@ class @Gen_context
     when "Field_access"
       t = gen ast.t, opt, ctx
       ret = "#{t}.#{ast.name}"
-      # if ret == 'msg.sender'
-      #   ret = 'sp.sender'
+      if ret == 'block.number'
+        ret = 'context.blockIndex()'
+      if ret == 'msg.sender'
+        ret = 'context.sender()'
+      if ret == 'msg.value'
+        ret = 'context.attachedDeposit()'
       ret
     
     # ###################################################################################################
