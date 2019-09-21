@@ -10,6 +10,6 @@ contract Struct {
     }
 
   function ifer() public {
-  //  User memory u = User(1, 2, 3);
+    User memory u = User(1, 2, 3);
   }
 }
