@@ -9,6 +9,10 @@ translate_type = (type)->
       'u32'
     when 't_int256'
       'i32'
+    when 't_address'
+      'address'
+    when 'map'
+      "new PersistentMap<#{translate_type type.nest_list[0]},#{translate_type type.nest_list[1]}>" 
     else
       throw new Error("unknown solidity type '#{type}'")
     
@@ -69,7 +73,7 @@ class @Gen_context
   ret = module._gen ast, opt, ctx
   
   """
-  import { storage, logging } from "near-runtime-ts";
+  import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
   #{ret}
   """#"
 
