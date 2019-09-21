@@ -419,7 +419,43 @@ describe 'translate section', ()->
     };
     // Smart Contract Forer END
     ;
-    """
+    """#"
+    make_test text_i, text_o
+  
+  it 'continue break', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+  
+    contract Forer {
+      mapping (address => int) balances;
+      
+      function forer(address owner) public returns (int yourMom) {
+        int i = 0;
+        for(i=2;i < 5;i++) {
+          i += 1;
+          continue;
+          break;
+        }
+        return i;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let balances:PersistentMap<string,i32>;
+    export function Forer__forer(owner:string):i32 {
+      let i:i32 = 0;
+      for(i = 2;(i < 5);i++) {
+        i += 1;
+        continue;
+        break;
+      };
+      return i;
+    };
+    // Smart Contract Forer END
+    ;
+    """#"
     make_test text_i, text_o
   
   it 'fn call', ()->

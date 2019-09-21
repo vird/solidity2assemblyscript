@@ -230,6 +230,12 @@ class @Gen_context
       }
       """
     
+    when "Continue"
+      "continue"
+    
+    when "Break"
+      "break"
+    
     when "Class_decl"
       ctx = ctx.mk_nest()
       ctx.class_name = ast.name

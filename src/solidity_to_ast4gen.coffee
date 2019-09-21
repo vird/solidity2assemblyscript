@@ -223,6 +223,12 @@ module.exports = (root)->
         ret.scope = walk_exec ast_tree.body, ctx
         ret
       
+      when 'Continue'
+        new ast.Continue
+      
+      when 'Break'
+        new ast.Break
+      
       # ###################################################################################################
       #    control flow
       # ###################################################################################################
