@@ -216,6 +216,7 @@ describe 'translate section', ()->
         int c = 1;
         bool bb;
         c = -c;
+        c = ~c;
         c = a + b;
         c = a - b;
         c = a * b;
@@ -244,6 +245,7 @@ describe 'translate section', ()->
         let c:i32 = 1;
         let bb:boolean;
         c = -(c);
+        c = ~(c);
         c = (a + b);
         c = (a - b);
         c = (a * b);

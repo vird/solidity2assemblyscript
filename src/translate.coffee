@@ -52,9 +52,9 @@ translate_type = (type)->
 @un_op_name_cb_map =
   MINUS   : (a)->"-(#{a})"
   BOOL_NOT: (a)->"!(#{a})"
+  BIT_NOT : (a)->"~(#{a})"
   # NOT VFERIFIED
   PLUS    : (a)->"+(#{a})"
-  BIT_NOT : (a)->"~(#{a})"
 
 class @Gen_context
   class_name: null
@@ -121,6 +121,21 @@ class @Gen_context
       if ret == 'msg.value'
         ret = 'context.attachedDeposit()'
       ret
+    
+    when "Fn_call"
+      fn = gen ast.fn, opt, ctx
+      arg_list = []
+      for v in ast.arg_list
+        arg_list.push gen v, opt, ctx
+      
+      # HACK
+      if fn == "require"
+        failtext = arg_list[1] or ""
+        return """
+          if (!#{arg_list[0]}) throw new Error(#{failtext})
+          """
+      
+      "#{fn}(#{arg_list.join ', '})"
     
     # ###################################################################################################
     #    stmt
