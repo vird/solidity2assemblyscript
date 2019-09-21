@@ -422,6 +422,40 @@ describe 'translate section', ()->
     """#"
     make_test text_i, text_o
   
+  it 'for no init and incr', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+  
+    contract Forer {
+      mapping (address => int) balances;
+      
+      function forer(address owner) public returns (int yourMom) {
+        int i = 0;
+        for(;i < 5;) {
+          i += 1;
+          break;
+        }
+        return i;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let balances:PersistentMap<string,i32>;
+    export function Forer__forer(owner:string):i32 {
+      let i:i32 = 0;
+      for(;(i < 5);) {
+        i += 1;
+        break;
+      };
+      return i;
+    };
+    // Smart Contract Forer END
+    ;
+    """#"
+    make_test text_i, text_o
+  
   it 'continue break', ()->
     text_i = """
     pragma solidity ^0.5.11;
@@ -702,6 +736,29 @@ describe 'translate section', ()->
     // Smart Contract Array START
     let a:u32 = 1;
     export function Array__f(len:u32):void {
+      let b:u32 = 1;
+    };
+    // Smart Contract Array END
+    ;
+    """#"
+    make_test text_i, text_o
+  
+  it 'private method', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Array {
+        uint a = 1;
+        function f(uint len) private {
+          uint b = 1;
+        }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Array START
+    let a:u32 = 1;
+    function Array__f(len:u32):void {
       let b:u32 = 1;
     };
     // Smart Contract Array END

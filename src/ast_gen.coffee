@@ -36,5 +36,6 @@ module.exports = (code, opt={})->
 
   res = output.sources['test.sol'].ast
   if !res
+    ### !pragma coverage-skip-block ###
     throw Error "!res"
   res
