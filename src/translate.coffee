@@ -110,6 +110,13 @@ class @Gen_context
       else
         throw new Error "Unknown/unimplemented un_op #{ast.op}"
     
+    when "Field_access"
+      t = gen ast.t, opt, ctx
+      ret = "#{t}.#{ast.name}"
+      # if ret == 'msg.sender'
+      #   ret = 'sp.sender'
+      ret
+    
     # ###################################################################################################
     #    stmt
     # ###################################################################################################
