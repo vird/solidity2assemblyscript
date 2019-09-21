@@ -150,6 +150,15 @@ class @Gen_context
         #{make_tab f, '  '}
       }
       """
+
+    when "While"
+      cond = gen ast.cond, opt, ctx
+      scope  = gen ast.scope, opt, ctx
+      """
+      while (#{cond}) {
+        #{make_tab scope, '  '}
+      } 
+      """
     
     when "Class_decl"
       ctx = ctx.mk_nest()
