@@ -618,3 +618,35 @@ describe 'translate section', ()->
     """#"
     make_test text_i, text_o
   
+  it 'struct array', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Array {
+        
+        struct User {
+            uint experience;
+            uint level;
+            uint dividends;
+        }
+        function f(uint len) public {
+            User[] memory a = new User[](7);
+        }
+    }
+
+    """#"
+    text_o = """
+    export class User {
+      let experience:u32;
+      let level:u32;
+      let dividends:u32;
+    }
+    ;
+    export function Array__f(len:u32):void {
+      let a:User[] = new User[](7);
+    };
+    // Smart Contract Array END
+    ;
+    """#"
+    make_test text_i, text_o
+  
