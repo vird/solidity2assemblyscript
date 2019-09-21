@@ -1,0 +1,35 @@
+{
+  "name": "solidity2assemblyscript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "install": "iced -o lib -c src",
+    "test": "mocha --recursive --compilers coffee:iced-coffee-script/register --require iced-coffee-coverage/register-istanbul test && istanbul report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vird/solidity2assemblyscript.git"
+  },
+  "keywords": [],
+  "author": "vird",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vird/solidity2assemblyscript/issues"
+  },
+  "homepage": "https://github.com/vird/solidity2assemblyscript#readme",
+  "devDependencies": {
+    "coveralls": "^2.13.0",
+    "iced-coffee-coverage": "^1.0.21",
+    "iced-coffee-script": "^108.0.11",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "ast4gen": "github:hu2prod/ast4gen",
+    "fy": "github:hu2prod/fy",
+    "iced-runtime": "^1.0.3",
+    "solc": "^0.5.11",
+    "type": "github:hu2prod/type"
+  }
+}
