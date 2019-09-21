@@ -120,6 +120,21 @@ class @Gen_context
         ret = 'context.attachedDeposit()'
       ret
     
+    when "Fn_call"
+      fn = gen ast.fn, opt, ctx
+      arg_list = []
+      for v in ast.arg_list
+        arg_list.push gen v, opt, ctx
+      
+      # HACK
+      if fn == "require"
+        failtext = arg_list[1] or ""
+        return """
+          if (!#{arg_list[0]}) throw new Error(#{failtext})
+          """
+      
+      "#{fn}(#{arg_list.join ', '})"
+    
     # ###################################################################################################
     #    stmt
     # ###################################################################################################
