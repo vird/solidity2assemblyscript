@@ -3,6 +3,8 @@ module = @
 
 translate_type = (type)->
   switch type.main
+    when 't_bool'
+      'boolean'
     when 't_uint256'
       'u32'
     when 't_int256'
@@ -12,13 +14,11 @@ translate_type = (type)->
     
     
 @bin_op_name_map =
-  # NOT VFERIFIED
   ADD : '+'
   SUB : '-'
   MUL : '*'
   DIV : '/'
   MOD : '%'
-  
   
   EQ : '=='
   NE : '!='
@@ -27,12 +27,14 @@ translate_type = (type)->
   GTE: '>='
   LTE: '<='
   
-  BOOL_AND: 'and'
-  BOOL_OR : 'or'
   
   BIT_AND : '&'
   BIT_OR  : '|'
   BIT_XOR : '^'
+  # NOT VFERIFIED
+  
+  BOOL_AND: 'and'
+  BOOL_OR : 'or'
 
 @bin_op_name_cb_map =
   # NOT VFERIFIED
@@ -45,8 +47,9 @@ translate_type = (type)->
   INDEX_ACCESS : (a, b)->"#{a}[#{b}]"
 
 @un_op_name_cb_map =
-  # NOT VFERIFIED
   MINUS   : (a)->"-(#{a})"
+  BOOL_NOT: (a)->"!(#{a})"
+  # NOT VFERIFIED
   PLUS    : (a)->"+(#{a})"
   BIT_NOT : (a)->"~(#{a})"
 
@@ -134,6 +137,18 @@ class @Gen_context
         jl.push gen v, opt, ctx
       """
       return #{jl.join ', '}
+      """
+    
+    when "If"
+      cond = gen ast.cond, opt, ctx
+      t    = gen ast.t, opt, ctx
+      f    = gen ast.f, opt, ctx
+      """
+      if (#{cond}) {
+        #{make_tab t, '  '}
+      } else {
+        #{make_tab f, '  '}
+      }
       """
     
     when "Class_decl"

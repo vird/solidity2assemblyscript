@@ -38,6 +38,7 @@ un_op_map =
   '-' : 'MINUS'
   '+' : 'PLUS'
   '~' : 'BIT_NOT'
+  '!' : 'BOOL_NOT'
 
 class Context
   current_contract  : null

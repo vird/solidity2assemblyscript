@@ -17,5 +17,6 @@ NOTE there is no cli tool for now. But workaround is present.
     # clone this repo (one time)
     git clone https://github.com/vird/solidity2assemblyscript
     cd solidity2assemblyscript
+    npm i
     # how to use
     ./test_translate.coffee <contract.sol>
