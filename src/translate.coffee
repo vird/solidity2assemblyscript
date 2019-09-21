@@ -10,7 +10,7 @@ translate_type = (type)->
     when 't_int256'
       'i32'
     when 't_address'
-      'address'
+      'string'
     when 'map'
       "PersistentMap<#{translate_type type.nest_list[0]},#{translate_type type.nest_list[1]}>"
     when 'array'
@@ -202,9 +202,10 @@ class @Gen_context
         jl.push "#{k} : #{translate_type v.type}"
       for k,v of ctx.fn_hash
         jl.push "#{k} : #{translate_type v.type}"
+
       if ast.is_struct
         """
-        class #{ast.name} {
+        export class #{ast.name} {
           #{make_tab body, "  "}
         }
         
