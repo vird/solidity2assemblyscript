@@ -30,7 +30,7 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Summator START
-    let value:u32;
+    let value:u64;
     export function Summator__test():void {
       value = 1;
     };
@@ -62,10 +62,10 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Ifer START
-    let value:u32;
-    export function Ifer__ifer():u32 {
-      let x:u32 = 5;
-      let ret:u32 = 0;
+    let value:u64;
+    export function Ifer__ifer():u64 {
+      let x:u64 = 5;
+      let ret:u64 = 0;
       if ((x == 5)) {
         ret = (value + x);
       } else {
@@ -95,9 +95,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let value:u32;
-    export function Forer__forer():u32 {
-      let y:u32 = 0;
+    let value:u64;
+    export function Forer__forer():u64 {
+      let y:u64 = 0;
       assert((y == 0), "wtf");
       return y;
     };
@@ -123,9 +123,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let value:u32;
-    export function Forer__forer():u32 {
-      let y:u32 = 0;
+    let value:u64;
+    export function Forer__forer():u64 {
+      let y:u64 = 0;
       assert((y == 0));
       return y;
     };
@@ -155,7 +155,7 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let value:u32;
+    let value:u64;
     export function Forer__forer():boolean {
       let a:boolean;
       let b:boolean;
@@ -206,11 +206,11 @@ describe 'translate section', ()->
     text_o = """
       import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
       // Smart Contract Forer START
-      let value:u32;
-      export function Forer__forer():u32 {
-        let a:u32 = 0;
-        let b:u32 = 0;
-        let c:u32 = 0;
+      let value:u64;
+      export function Forer__forer():u64 {
+        let a:u64 = 0;
+        let b:u64 = 0;
+        let c:u64 = 0;
         c = (a + b);
         c = (a - b);
         c = (a * b);
@@ -275,11 +275,11 @@ describe 'translate section', ()->
     text_o = """
       import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
       // Smart Contract Forer START
-      let value:i32;
-      export function Forer__forer():i32 {
-        let a:i32 = 1;
-        let b:i32 = 1;
-        let c:i32 = 1;
+      let value:i64;
+      export function Forer__forer():i64 {
+        let a:i64 = 1;
+        let b:i64 = 1;
+        let c:i64 = 1;
         let bb:boolean;
         c = -(c);
         c = ~(c);
@@ -323,9 +323,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let balances:PersistentMap<string,u32>;
-    export function Forer__forer(owner:string):u32 {
-      return balances[owner];
+    let balances:PersistentMap<string,u64>;
+    export function Forer__forer(owner:string):u64 {
+      return balances.getSome(owner);
     };
     // Smart Contract Forer END
     ;
@@ -348,10 +348,10 @@ describe 'translate section', ()->
     text_o = """
       import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
       // Smart Contract Forer START
-      let balances:PersistentMap<string,i32>;
-      export function Forer__forer(owner:string):i32 {
-        balances[owner] += 1;
-        return balances[owner];
+      let balances:PersistentMap<string,i64>;
+      export function Forer__forer(owner:string):i64 {
+        balances.set(owner, (balances.getSome(owner) + 1));
+        return balances.getSome(owner);
       };
       // Smart Contract Forer END
       ;
@@ -377,9 +377,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let balances:PersistentMap<string,i32>;
-    export function Forer__forer(owner:string):i32 {
-      let i:i32 = 0;
+    let balances:PersistentMap<string,i64>;
+    export function Forer__forer(owner:string):i64 {
+      let i:i64 = 0;
       while ((i < 5)) {
         i += 1;
       } ;
@@ -409,9 +409,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let balances:PersistentMap<string,i32>;
-    export function Forer__forer(owner:string):i32 {
-      let i:i32 = 0;
+    let balances:PersistentMap<string,i64>;
+    export function Forer__forer(owner:string):i64 {
+      let i:i64 = 0;
       for(i = 2;(i < 5);i++) {
         i += 1;
       };
@@ -442,9 +442,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let balances:PersistentMap<string,i32>;
-    export function Forer__forer(owner:string):i32 {
-      let i:i32 = 0;
+    let balances:PersistentMap<string,i64>;
+    export function Forer__forer(owner:string):i64 {
+      let i:i64 = 0;
       for(;(i < 5);) {
         i += 1;
         break;
@@ -477,9 +477,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    let balances:PersistentMap<string,i32>;
-    export function Forer__forer(owner:string):i32 {
-      let i:i32 = 0;
+    let balances:PersistentMap<string,i64>;
+    export function Forer__forer(owner:string):i64 {
+      let i:i64 = 0;
       for(i = 2;(i < 5);i++) {
         i += 1;
         continue;
@@ -508,10 +508,10 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Forer START
-    export function Forer__call_me(a:i32):i32 {
+    export function Forer__call_me(a:i64):i64 {
       return a;
     };
-    export function Forer__forer(a:i32):i32 {
+    export function Forer__forer(a:i64):i64 {
       return call_me(a);
     };
     // Smart Contract Forer END
@@ -541,11 +541,11 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Struct START
-    let value:u32;
+    let value:u64;
     export class User {
-      experience:u32;
-      level:u32;
-      dividends:u32;
+      experience:u64;
+      level:u64;
+      dividends:u64;
     }
     ;
     export function Struct__ifer():void {
@@ -578,9 +578,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Struct START
-    let value:u32;
+    let value:u64;
     export class Sub {
-      experience:u32;
+      experience:u64;
     }
     ;
     export class User {
@@ -611,9 +611,9 @@ describe 'translate section', ()->
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Mapper START
     export function Mapper__ifer():void {
-      let a:i32 = 1;
-      let b:i32 = 1;
-      let c:i32 = (((a + b)) * b);
+      let a:i64 = 1;
+      let b:i64 = 1;
+      let c:i64 = (((a + b)) * b);
     };
     // Smart Contract Mapper END
     ;
@@ -641,14 +641,14 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Array START
-    export function Array__f(len:u32):void {
-      let a:UInt32Array = new UInt32Array(7);
-      let b:Int32Array = new Int32Array(1000);
+    export function Array__f(len:u64):void {
+      let a:UInt64Array = new UInt64Array(7);
+      let b:Int64Array = new Int64Array(1000);
       let c:Uint8Array = new Uint8Array(len);
       let d:bool[] = new bool[](len);
       let e:address[] = new address[](len);
       let f:address[];
-      a[6] = 8;
+      a.getSome(6) = 8;
     };
     // Smart Contract Array END
     ;
@@ -676,12 +676,12 @@ describe 'translate section', ()->
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Array START
     export class User {
-      experience:u32;
-      level:u32;
-      dividends:u32;
+      experience:u64;
+      level:u64;
+      dividends:u64;
     }
     ;
-    export function Array__f(len:u32):void {
+    export function Array__f(len:u64):void {
       let a:User[] = new User[](7);
     };
     // Smart Contract Array END
@@ -708,11 +708,11 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Globals START
-    let value:u32;
-    export function Globals__ifer():u32 {
-      let x:u32 = context.blockIndex();
-      let y:string = context.sender();
-      let z:u32 = context.attachedDeposit();
+    let value:u64;
+    export function Globals__ifer():u64 {
+      let x:u64 = context.blockIndex;
+      let y:string = context.sender;
+      let z:u64 = context.attachedDeposit;
       return x;
     };
     // Smart Contract Globals END
@@ -734,9 +734,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Array START
-    let a:u32 = 1;
-    export function Array__f(len:u32):void {
-      let b:u32 = 1;
+    let a:u64 = 1;
+    export function Array__f(len:u64):void {
+      let b:u64 = 1;
     };
     // Smart Contract Array END
     ;
@@ -757,9 +757,9 @@ describe 'translate section', ()->
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Array START
-    let a:u32 = 1;
-    function Array__f(len:u32):void {
-      let b:u32 = 1;
+    let a:u64 = 1;
+    function Array__f(len:u64):void {
+      let b:u64 = 1;
     };
     // Smart Contract Array END
     ;

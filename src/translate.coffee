@@ -1,4 +1,6 @@
 require 'fy/codegen'
+Type   = require('type')
+mod_ast= require('./ast')
 module = @
 
 translate_type_array = (type)->
@@ -8,9 +10,9 @@ translate_type_array = (type)->
       p "WARNING #{nest.main}[] is probably not existing type in assemblyScript"
       "#{nest.main}[]"
     when 'int'
-      'Int32Array'
+      'Int64Array'
     when 'uint'
-      'UInt32Array'
+      'UInt64Array'
     else
       "#{translate_type nest}[]"
 
@@ -68,7 +70,8 @@ translate_type = (type)->
   ASS_MUL : (a, b)-> "#{a} *= #{b}"
   ASS_DIV : (a, b)-> "#{a} /= #{b}"
   
-  INDEX_ACCESS : (a, b)->"#{a}[#{b}]"
+  INDEX_ACCESS : (a, b, ctx, ast)->
+    "#{a}.getSome(#{b})"
 
 @un_op_name_cb_map =
   MINUS   : (a)->"-(#{a})"
@@ -86,7 +89,6 @@ translate_type = (type)->
 
 class @Gen_context
   class_name: null
-  lvalue    : false
   is_struct : false
   mk_nest : ()->
     t = new module.Gen_context
@@ -126,8 +128,28 @@ class @Gen_context
     when 'Bin_op'
       ctx_lvalue = ctx.mk_nest()
       is_assign = 0 == ast.op.indexOf 'ASS'
-      if is_assign
-        ctx_lvalue.lvalue = true
+      is_a_index_access = ast.a.constructor.name == 'Bin_op' and ast.a.op == 'INDEX_ACCESS'
+      
+      # Edge case custom maps getter/setter
+      if is_assign and is_a_index_access and ast.a.a.type.main == 'map'
+        _a_col = gen ast.a.a, opt, ctx_lvalue
+        _a_key = gen ast.a.b, opt, ctx_lvalue
+        if ast.op == 'ASSIGN'
+          # simple case
+          _b = gen ast.b, opt, ctx
+          return "#{_a_col}.set(#{_a_key}, #{_b})"
+        else
+          # we need a = a op b
+          _a = gen ast.a, opt, ctx_lvalue
+          
+          synth_b = new mod_ast.Bin_op
+          synth_b.op = ast.op.replace 'ASS_', ''
+          synth_b.a  = ast.a
+          synth_b.b  = ast.b
+          synth_b.type = ast.a.type
+          _synth_b = gen synth_b, opt, ctx
+          return "#{_a_col}.set(#{_a_key}, #{_synth_b})"
+      
       _a = gen ast.a, opt, ctx_lvalue
       _b = gen ast.b, opt, ctx
       if op = module.bin_op_name_map[ast.op]
