@@ -162,6 +162,11 @@ class @Gen_context
         return """
           assert(#{arg_list[0]}#{aux_failtext})
           """
+      # HACK
+      if fn == "revert"
+        return """
+          assert(false)
+          """
       
       "#{fn}(#{arg_list.join ', '})"
     
