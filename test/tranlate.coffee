@@ -98,7 +98,7 @@ describe 'translate section', ()->
     let value:u32;
     export function Forer__forer():u32 {
       let y:u32 = 0;
-      assert((y == 0)), "wtf");
+      assert((y == 0), "wtf");
       return y;
     };
     // Smart Contract Forer END
@@ -126,7 +126,7 @@ describe 'translate section', ()->
     let value:u32;
     export function Forer__forer():u32 {
       let y:u32 = 0;
-      assert((y == 0)));
+      assert((y == 0));
       return y;
     };
     // Smart Contract Forer END
@@ -543,9 +543,9 @@ describe 'translate section', ()->
     // Smart Contract Struct START
     let value:u32;
     export class User {
-      let experience:u32;
-      let level:u32;
-      let dividends:u32;
+      experience:u32;
+      level:u32;
+      dividends:u32;
     }
     ;
     export function Struct__ifer():void {
@@ -580,11 +580,11 @@ describe 'translate section', ()->
     // Smart Contract Struct START
     let value:u32;
     export class Sub {
-      let experience:u32;
+      experience:u32;
     }
     ;
     export class User {
-      let experience:Sub;
+      experience:Sub;
     }
     ;
     export function Struct__ifer():void {
@@ -676,9 +676,9 @@ describe 'translate section', ()->
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Array START
     export class User {
-      let experience:u32;
-      let level:u32;
-      let dividends:u32;
+      experience:u32;
+      level:u32;
+      dividends:u32;
     }
     ;
     export function Array__f(len:u32):void {
