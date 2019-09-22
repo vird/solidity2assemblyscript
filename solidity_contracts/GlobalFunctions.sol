@@ -4,7 +4,8 @@ contract Globals {
   uint public value;
   
   function ifer() public returns (uint) {
-    uint x = uint(keccak256(abi.encode(0x26)));
+    uint x = block.number;
+
     return x;
   }
 }

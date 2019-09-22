@@ -145,8 +145,6 @@ class @Gen_context
         ret = 'context.sender()'
       if ret == 'msg.value'
         ret = 'context.attachedDeposit()'
-      if ret = 'this'
-        ret = 'context.contractName'
       ret
     
     when "Fn_call"
@@ -166,6 +164,10 @@ class @Gen_context
       if fn == "revert"
         return """
           assert(false)
+          """
+      if fn == "keccak256" || fn == "sha3"
+        return """
+          "hash(#{arg_list.join ', '})"
           """
       
       "#{fn}(#{arg_list.join ', '})"
