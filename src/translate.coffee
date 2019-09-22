@@ -145,6 +145,8 @@ class @Gen_context
         ret = 'context.sender()'
       if ret == 'msg.value'
         ret = 'context.attachedDeposit()'
+      if ret = 'this'
+        ret = 'context.contractName'
       ret
     
     when "Fn_call"
