@@ -154,11 +154,11 @@ class @Gen_context
         arg_list.push gen v, opt, ctx
       
       # HACK
-      if fn == "require"
+      if fn == "require" || fn == "assert"
         aux_failtext = arg_list[1] or ""
         aux_failtext = ", #{aux_failtext}" if aux_failtext
         return """
-          assert(#{arg_list[0]})#{aux_failtext})
+          assert(#{arg_list[0]}#{aux_failtext})
           """
       
       "#{fn}(#{arg_list.join ', '})"
