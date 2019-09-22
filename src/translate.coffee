@@ -21,9 +21,9 @@ translate_type = (type)->
     when 'bool'
       'boolean'
     when 'uint'
-      'u32'
+      'u64'
     when 'int'
-      'i32'
+      'i64'
     when 'address'
       'string'
     when 'map'
@@ -111,6 +111,9 @@ class @Gen_context
       {name} = ast
       if name == 'this'
         name = 'context.contractName'
+      if name == 'now'
+        name = 'context.blockIndex'
+
       name
     
     when "Const"
@@ -148,11 +151,11 @@ class @Gen_context
       t = gen ast.t, opt, ctx
       ret = "#{t}.#{ast.name}"
       if ret == 'block.number'
-        ret = 'context.blockIndex()'
+        ret = 'context.blockIndex'
       if ret == 'msg.sender'
-        ret = 'context.sender()'
+        ret = 'context.sender'
       if ret == 'msg.value'
-        ret = 'context.attachedDeposit()'
+        ret = 'context.attachedDeposit'
       ret
     
     when "Fn_call"

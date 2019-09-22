@@ -4,8 +4,7 @@ contract Globals {
   uint public value;
   
   function ifer() public returns (uint) {
-    uint x = block.number;
-
+    uint x = now;
     return x;
   }
 }
