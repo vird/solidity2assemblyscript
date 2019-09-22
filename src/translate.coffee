@@ -86,6 +86,8 @@ translate_type = (type)->
 
 class @Gen_context
   class_name: null
+  lvalue    : false
+  is_struct : false
   mk_nest : ()->
     t = new module.Gen_context
     t
@@ -107,6 +109,8 @@ class @Gen_context
     # ###################################################################################################
     when "Var"
       {name} = ast
+      if name == 'this'
+        name = 'context.contractName'
       name
     
     when "Const"
@@ -117,7 +121,11 @@ class @Gen_context
           ast.val
     
     when 'Bin_op'
-      _a = gen ast.a, opt, ctx
+      ctx_lvalue = ctx.mk_nest()
+      is_assign = 0 == ast.op.indexOf 'ASS'
+      if is_assign
+        ctx_lvalue.lvalue = true
+      _a = gen ast.a, opt, ctx_lvalue
       _b = gen ast.b, opt, ctx
       if op = module.bin_op_name_map[ast.op]
         "(#{_a} #{op} #{_b})"
@@ -145,8 +153,6 @@ class @Gen_context
         ret = 'context.sender()'
       if ret == 'msg.value'
         ret = 'context.attachedDeposit()'
-      if ret = 'this'
-        ret = 'context.contractName'
       ret
     
     when "Fn_call"
@@ -179,7 +185,7 @@ class @Gen_context
     when "Var_decl"
       type = translate_type ast.type
       
-      if ast.in_struct
+      if ctx.is_struct
         pre = "#{ast.name}:#{type}"
       else
         pre = "let #{ast.name}:#{type}"
@@ -242,10 +248,10 @@ class @Gen_context
     when "Class_decl"
       ctx = ctx.mk_nest()
       ctx.class_name = ast.name
+      if ast.is_struct
+        ctx.is_struct = true
       body = gen ast.scope, opt, ctx
       if ast.is_struct
-        for v in ast.scope.list
-          v.in_struct = true
         """
         export class #{ast.name} {
           #{make_tab body, "  "}
