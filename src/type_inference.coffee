@@ -273,10 +273,11 @@ is_not_a_type = (type)->
         null
       
       when "For_3pos"
-        walk t.init, ctx.mk_nest() if t.init
-        walk t.cond, ctx.mk_nest()
-        walk t.incr, ctx.mk_nest() if t.incr
-        walk t.scope, ctx.mk_nest()
+        ctx = ctx.mk_nest()
+        walk t.init, ctx if t.init
+        walk t.cond, ctx
+        walk t.incr, ctx if t.incr
+        walk t.scope, ctx
         null
       
       when "Continue"
@@ -457,10 +458,11 @@ is_not_a_type = (type)->
         null
       
       when "For_3pos"
-        walk t.init, ctx.mk_nest() if t.init
-        walk t.cond, ctx.mk_nest()
-        walk t.incr, ctx.mk_nest() if t.incr
-        walk t.scope, ctx.mk_nest()
+        ctx = ctx.mk_nest()
+        walk t.init, ctx if t.init
+        walk t.cond, ctx
+        walk t.incr, ctx if t.incr
+        walk t.scope, ctx
         null
       
       when "Continue"

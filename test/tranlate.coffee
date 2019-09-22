@@ -456,6 +456,38 @@ describe 'translate section', ()->
     """#"
     make_test text_i, text_o
   
+  it 'for init var_decl', ()->
+    text_i = """
+    pragma solidity ^0.5.11;
+    
+    contract Forer {
+      uint public value;
+      
+      function forer() public returns (uint yourMom) {
+        uint y = 0;
+        for (uint i=0; i<5; i+=1) {
+            y += 1;
+        }
+        return y;
+      }
+    }
+    """#"
+    text_o = """
+    import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
+    // Smart Contract Forer START
+    let value:u64;
+    export function Forer__forer():u64 {
+      let y:u64 = 0;
+      for(let i:u64 = 0;(i < 5);i += 1) {
+        y += 1;
+      };
+      return y;
+    };
+    // Smart Contract Forer END
+    ;
+    """#"
+    make_test text_i, text_o
+  
   it 'continue break', ()->
     text_i = """
     pragma solidity ^0.5.11;
