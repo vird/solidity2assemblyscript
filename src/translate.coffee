@@ -177,7 +177,10 @@ class @Gen_context
     when "Var_decl"
       type = translate_type ast.type
       
-      pre = "let #{ast.name}:#{type}"
+      if ast.in_struct
+        pre = "#{ast.name}:#{type}"
+      else
+        pre = "let #{ast.name}:#{type}"
       
       if ast.assign_value
         val = gen ast.assign_value, opt, ctx
@@ -239,6 +242,8 @@ class @Gen_context
       ctx.class_name = ast.name
       body = gen ast.scope, opt, ctx
       if ast.is_struct
+        for v in ast.scope.list
+          v.in_struct = true
         """
         export class #{ast.name} {
           #{make_tab body, "  "}
@@ -246,6 +251,7 @@ class @Gen_context
         
         """
       else
+        body = gen ast.scope, opt, ctx
         """
         // Smart Contract #{ast.name} START
         #{body}
