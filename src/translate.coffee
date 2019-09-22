@@ -5,16 +5,17 @@ module = @
 
 translate_type_array = (type)->
   nest = type.nest_list[0]
-  switch nest.main
-    when 'bool', 'address'
-      p "WARNING #{nest.main}[] is probably not existing type in assemblyScript"
-      "#{nest.main}[]"
-    when 'int'
-      'Int64Array'
-    when 'uint'
-      'UInt64Array'
-    else
-      "#{translate_type nest}[]"
+  "Array<#{translate_type nest}>"
+  # switch nest.main
+  #   when 'bool', 'address'
+  #     p "WARNING #{nest.main}[] is probably not existing type in assemblyScript"
+  #     "#{nest.main}[]"
+  #   when 'int'
+  #     'Int64Array'
+  #   when 'uint'
+  #     'UInt64Array'
+  #   else
+  #     "#{translate_type nest}[]"
 
 translate_type = (type)->
   if type.is_user_defined

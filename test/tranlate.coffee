@@ -623,7 +623,7 @@ describe 'translate section', ()->
   it 'typed arrays', ()->
     text_i = """
     pragma solidity ^0.5.11;
-
+    
     contract Array {
         function f(uint len) public {
             uint[] memory a = new uint[](7);
@@ -636,18 +636,17 @@ describe 'translate section', ()->
             a[6] = 8;
         }
     }
-
     """#"
     text_o = """
     import { context, storage, logging, collections, PersistentMap } from "near-runtime-ts";
     // Smart Contract Array START
     export function Array__f(len:u64):void {
-      let a:UInt64Array = new UInt64Array(7);
-      let b:Int64Array = new Int64Array(1000);
+      let a:Array<u64> = new Array<u64>(7);
+      let b:Array<i64> = new Array<i64>(1000);
       let c:Uint8Array = new Uint8Array(len);
-      let d:bool[] = new bool[](len);
-      let e:address[] = new address[](len);
-      let f:address[];
+      let d:Array<boolean> = new Array<boolean>(len);
+      let e:Array<string> = new Array<string>(len);
+      let f:Array<string>;
       a.getSome(6) = 8;
     };
     // Smart Contract Array END
@@ -682,7 +681,7 @@ describe 'translate section', ()->
     }
     ;
     export function Array__f(len:u64):void {
-      let a:User[] = new User[](7);
+      let a:Array<User> = new Array<User>(7);
     };
     // Smart Contract Array END
     ;
