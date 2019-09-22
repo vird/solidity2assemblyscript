@@ -75,7 +75,7 @@ describe 'translate section', ()->
     };
     // Smart Contract Ifer END
     ;
-    """
+    """#"
     make_test text_i, text_o
   
   it 'require', ()->
@@ -181,6 +181,7 @@ describe 'translate section', ()->
         uint a = 0;
         uint b = 0;
         uint c = 0;
+        bool bb;
         c = a + b;
         c = a - b;
         c = a * b;
@@ -189,6 +190,8 @@ describe 'translate section', ()->
         c = a & b;
         c = a | b;
         c = a ^ b;
+        c = a << b;
+        c = a >> b;
         c++;
         ++c;
         c--;
@@ -199,6 +202,12 @@ describe 'translate section', ()->
         c -= a;
         c *= a;
         c /= a;
+        bb = a == b;
+        bb = a != b;
+        bb = a <  b;
+        bb = a <= b;
+        bb = a >  b;
+        bb = a >= b;
         return c;
       }
     }
@@ -211,6 +220,7 @@ describe 'translate section', ()->
         let a:u64 = 0;
         let b:u64 = 0;
         let c:u64 = 0;
+        let bb:boolean;
         c = (a + b);
         c = (a - b);
         c = (a * b);
@@ -219,6 +229,8 @@ describe 'translate section', ()->
         c = (a & b);
         c = (a | b);
         c = (a ^ b);
+        c = (a << b);
+        c = (a >> b);
         c++;
         ++c;
         c--;
@@ -229,6 +241,12 @@ describe 'translate section', ()->
         c -= a;
         c *= a;
         c /= a;
+        bb = (a == b);
+        bb = (a != b);
+        bb = (a < b);
+        bb = (a <= b);
+        bb = (a > b);
+        bb = (a >= b);
         return c;
       };
       // Smart Contract Forer END
@@ -258,6 +276,8 @@ describe 'translate section', ()->
         c = a & b;
         c = a | b;
         c = a ^ b;
+        c = a << b;
+        c = a >> b;
         c++;
         ++c;
         c--;
@@ -291,6 +311,8 @@ describe 'translate section', ()->
         c = (a & b);
         c = (a | b);
         c = (a ^ b);
+        c = (a << b);
+        c = (a >> b);
         c++;
         ++c;
         c--;

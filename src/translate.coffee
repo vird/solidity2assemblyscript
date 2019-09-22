@@ -55,10 +55,13 @@ translate_type = (type)->
   GTE: '>='
   LTE: '<='
   
-  
   BIT_AND : '&'
   BIT_OR  : '|'
   BIT_XOR : '^'
+  
+  SHR : '>>'
+  SHL : '<<'
+  
   # NOT VFERIFIED
   
   BOOL_AND: 'and'
