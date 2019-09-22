@@ -10,7 +10,7 @@ translate_type_array = (type)->
     when 'int'
       'Int32Array'
     when 'uint'
-      'UInt32Array'
+      'Uшnt32Array'
     else
       "#{translate_type nest}[]"
 
