@@ -24,6 +24,7 @@ module = @
       type_i.nest_list.push "option<string>"
       ret
     )()
+    now : new Type "uint"
   }
 
 @default_type_hash_gen = ()->

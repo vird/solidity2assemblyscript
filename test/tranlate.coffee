@@ -753,6 +753,7 @@ describe 'translate section', ()->
         uint x = block.number;
         address y = msg.sender;
         uint z = msg.value;
+        uint zz = now;
 
         return x;
       }
@@ -766,6 +767,7 @@ describe 'translate section', ()->
       let x:u64 = context.blockIndex;
       let y:string = context.sender;
       let z:u64 = context.attachedDeposit;
+      let zz:u64 = context.blockIndex;
       return x;
     };
     // Smart Contract Globals END
